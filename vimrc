@@ -39,7 +39,7 @@ set expandtab        " expand tabs to spaces
 set textwidth=120
 " highlight matching braces
 set showmatch
-" colorsheme to default
+" set option for colorsheme
 set background=dark
 try
     colorscheme solarized
