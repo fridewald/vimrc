@@ -1,3 +1,4 @@
+" ---Plugin installation
 "Vundle configuration set nocompatible        "be improved, required
 filetype off            "required
 
@@ -9,20 +10,32 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-" solarized colorscheme
-Plugin 'altercation/vim-colors-solarized'
+
+
+" base16 colorscheme
+Plugin 'chriskempson/base16-vim'
+"
+Plugin 'vim-airline/vim-airline'
+
+
 " delete white space
 Plugin 'bronson/vim-trailing-whitespace'
-"Treebrowsering
+" Treebrowsering
 Plugin 'scrooloose/nerdtree'
+" Some improvements to nerdtree
+Plugin 'jistr/vim-nerdtree-tabs'
+"
+Plugin 'majutsushi/tagbar'
+" Syntax checker
+Plugin 'scrooloose/syntastic'
 " alignment plugin
-Plugin 'junegunn/vim-easy-align'
+"Plugin 'junegunn/vim-easy-align'
 
 " All of your Plugins must be added before the followign line
 call vundle#end()           "required
 filetype plugin indent on   "required
 
-" ---------------------------------------
+" ---General settings----------------------------
 " turn line numbers on
 set number
 " turn syntax highlighting on
@@ -39,10 +52,10 @@ set expandtab        " expand tabs to spaces
 set textwidth=120
 " highlight matching braces
 set showmatch
+
+" ---Plugin settings
 " set option for colorsheme
 set background=dark
-try
-    colorscheme solarized
-    "colorscheme default
-catch
-endtry
+" colorscheme
+let base16colorspace=256
+colorscheme base16-tomorrow
