@@ -1,4 +1,4 @@
-" ---Plugin installation
+" ---Plugin installation--------------------------
 "Vundle configuration set nocompatible        "be improved, required
 filetype off            "required
 
@@ -35,7 +35,7 @@ Plugin 'scrooloose/syntastic'
 call vundle#end()           "required
 filetype plugin indent on   "required
 
-" ---General settings----------------------------
+" ---General settings-----------------------------
 " turn line numbers on
 set number
 " turn syntax highlighting on
@@ -53,9 +53,23 @@ set textwidth=120
 " highlight matching braces
 set showmatch
 
-" ---Plugin settings
+" ---Plugin settings------------------------------
 " set option for colorsheme
 set background=dark
 " colorscheme
 let base16colorspace=256
 colorscheme base16-tomorrow
+
+"airline allways appear
+set laststatus=2
+
+"syntastic settings
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+"remap F5 for check
+noremap <silent><F5> :SyntasticCheck<CR>
