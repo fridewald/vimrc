@@ -1,16 +1,14 @@
 " ---Plugin installation--------------------------
+" copied a lot from "fisadev/fisa-vim-config"
 "Vundle configuration set nocompatible        "be improved, required
 filetype off            "required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/paht/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
 
 " base16 colorscheme
 Plugin 'chriskempson/base16-vim'
@@ -25,12 +23,12 @@ Plugin 'bronson/vim-trailing-whitespace'
 Plugin 'scrooloose/nerdtree'
 " Some improvements to nerdtree
 "Plugin 'jistr/vim-nerdtree-tabs'
+" Code commenter
+Plugin 'scrooloose/nerdcommenter'
 " Class/module browser
 Plugin 'majutsushi/tagbar'
 " Syntax checker
 Plugin 'scrooloose/syntastic'
-" alignment plugin
-"Plugin 'junegunn/vim-easy-align'
 " Code and files fuzzy finder
 Plugin 'ctrlpvim/ctrlp.vim'
 " Extension to ctrlp, for fuzzy command finder
@@ -39,29 +37,40 @@ Plugin 'fisadev/vim-ctrlp-cmdpalette'
 " operators, highlighting, run and ipdb breakpoints)
 Plugin 'klen/python-mode'
 
+
+" alignment plugin
+"Plugin 'junegunn/vim-easy-align'
+
 " All of your Plugins must be added before the followign line
 call vundle#end()           "required
 filetype plugin indent on   "required
 
 " ================================================
-" General settings
-"
+" ---General settings-----------------------------
+
+" no vi-compatible
+set nocompatible
+
 " turn line numbers on
 set number
+
 " turn syntax highlighting on
 syntax on
+
 " use indentation of previous line
-set autoindent
+"set autoindent
 " use intelligent indentation for C
-set smartindent
+"set smartindent
+
 " configure tabwidth and insert spaces instead of tabs
 set tabstop=4        " tab width is 4 spaces
 set shiftwidth=4     " indent also with 4 spaces
+set softtabstop=4
 set expandtab        " expand tabs to spaces
 " wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
 "set textwidth=120
 
-" set option for colorsheme
+" colorsheme
 if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
     let base16colorspace=256
     set background=dark
@@ -71,7 +80,7 @@ colorscheme base16-tomorrow
 " highlight matching braces
 set showmatch
 
-"airline allways appear
+" airline allways appear
 set laststatus=2
 
 " Comment this line to enable autocompletion preview window
@@ -82,14 +91,18 @@ set completeopt-=preview
 " when scrolling, keep cursor 3 lines away from screen border
 set scrolloff=3
 
-" more natural way of window splitting
+" more natural window splitting
 set splitright
 set splitbelow
+
+" change <leader> to ,
+let mapleader=","
 
 " ===============================================
 " Plugin settings
 
-" syntastic settings---------
+
+" syntastic------------------
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -97,7 +110,7 @@ set statusline+=%*
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-"remap F5 for check
+" remap F5 for check
 noremap <silent><F5> :SyntasticCheck<CR>
 " show list of erors and warnings on the current file
 nmap <leader>e :Errors<CR>
