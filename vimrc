@@ -1,16 +1,14 @@
 " ---Plugin installation--------------------------
+" copied a lot from "fisadev/fisa-vim-config"
 "Vundle configuration set nocompatible        "be improved, required
 filetype off            "required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/paht/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
 
 " base16 colorscheme
 Plugin 'chriskempson/base16-vim'
@@ -31,6 +29,14 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'majutsushi/tagbar'
 " Syntax checker
 Plugin 'scrooloose/syntastic'
+" Code and files fuzzy finder
+Plugin 'ctrlpvim/ctrlp.vim'
+" Extension to ctrlp, for fuzzy command finder
+Plugin 'fisadev/vim-ctrlp-cmdpalette'
+" Python mode (indentation, doc, refactor, lints, code checking, motion and
+" operators, highlighting, run and ipdb breakpoints)
+Plugin 'klen/python-mode'
+
 " alignment plugin
 "Plugin 'junegunn/vim-easy-align'
 
@@ -38,15 +44,23 @@ Plugin 'scrooloose/syntastic'
 call vundle#end()           "required
 filetype plugin indent on   "required
 
+" ================================================
 " ---General settings-----------------------------
+
+" no vi-compatible
+set nocompatible
+
 " turn line numbers on
 set number
+
 " turn syntax highlighting on
 syntax on
+
 " use indentation of previous line
 set autoindent
 " use intelligent indentation for C
 set smartindent
+
 " configure tabwidth and insert spaces instead of tabs
 set tabstop=4        " tab width is 4 spaces
 set shiftwidth=4     " indent also with 4 spaces
