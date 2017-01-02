@@ -36,6 +36,8 @@ Plugin 'fisadev/vim-ctrlp-cmdpalette'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
 Plugin 'klen/python-mode'
+"git integration
+Plugin 'tpope/vim-fugitive'
 
 " alignment plugin
 "Plugin 'junegunn/vim-easy-align'
