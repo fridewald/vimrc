@@ -1,14 +1,16 @@
 " ---Plugin installation--------------------------
-" copied a lot from "fisadev/fisa-vim-config"
 "Vundle configuration set nocompatible        "be improved, required
 filetype off            "required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/paht/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+
 
 " base16 colorscheme
 Plugin 'chriskempson/base16-vim'
@@ -29,15 +31,6 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'majutsushi/tagbar'
 " Syntax checker
 Plugin 'scrooloose/syntastic'
-" Code and files fuzzy finder
-Plugin 'ctrlpvim/ctrlp.vim'
-" Extension to ctrlp, for fuzzy command finder
-Plugin 'fisadev/vim-ctrlp-cmdpalette'
-" Python mode (indentation, doc, refactor, lints, code checking, motion and
-" operators, highlighting, run and ipdb breakpoints)
-Plugin 'klen/python-mode'
-
-
 " alignment plugin
 "Plugin 'junegunn/vim-easy-align'
 
@@ -45,27 +38,18 @@ Plugin 'klen/python-mode'
 call vundle#end()           "required
 filetype plugin indent on   "required
 
-" ================================================
 " ---General settings-----------------------------
-
-" no vi-compatible
-set nocompatible
-
 " turn line numbers on
 set number
-
 " turn syntax highlighting on
 syntax on
-
 " use indentation of previous line
-"set autoindent
+set autoindent
 " use intelligent indentation for C
-"set smartindent
-
+set smartindent
 " configure tabwidth and insert spaces instead of tabs
 set tabstop=4        " tab width is 4 spaces
 set shiftwidth=4     " indent also with 4 spaces
-set softtabstop=4
 set expandtab        " expand tabs to spaces
 " wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
 "set textwidth=120
@@ -201,3 +185,12 @@ let g:neocomplete#same_filetypes = {}
 let g:neocomplete#same_filetypes._ = '_'
 " <TAB>: completion
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" transparent background
+highlight Normal ctermbg=none
+highlight Statement ctermbg=none
+highlight Title ctermbg=none
+highlight Underlined ctermbg=none
+highlight ErrorMsg ctermbg=none
+highlight LineNr ctermbg=none
+highlight Todo ctermbg=none
+highlight NonText ctermbg=none
