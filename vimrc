@@ -163,8 +163,8 @@ let g:ctrlp_custom_ignore = {
   \ }
 
 " Airline--------------------
-let g:airline_powerline_font = 0
-let g:airline_theme = 'base16'
+let g:airline_powerline_font = 1
+"let g:airline_theme = 'base16'
 let g:airline#extensions#whitespace#enabled = 0
 
 " NeoComplete.vim------------
@@ -185,6 +185,7 @@ let g:neocomplete#same_filetypes = {}
 let g:neocomplete#same_filetypes._ = '_'
 " <TAB>: completion
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+
 " transparent background
 highlight Normal ctermbg=none
 highlight Statement ctermbg=none
