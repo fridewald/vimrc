@@ -4,6 +4,16 @@
 filetype off            "required
 
 " set the runtime path to include Vundle and initialize
+let vundle_autoinstall=0
+let vundle_readme = expand('~/.vim/bundle/Vundle.vim/README.md')
+if !filereadable(vundle_readme)
+    echo "Installing Vundle..."
+    echo ""
+    silent !mkdir -p ~/.vim/bundle
+    silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    let vundle_autoinstll = 1
+endif
+
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -48,6 +58,13 @@ Plugin 'fatih/vim-go'
 
 " All of your Plugins must be added before the followign line
 call vundle#end()           "required
+
+if vundle_autoinstall
+    echo "Installing bundles..."
+    echo ""
+    :BundleInstall
+endif
+
 filetype plugin indent on   "required
 
 " ================================================
@@ -56,58 +73,80 @@ filetype plugin indent on   "required
 " no vi-compatible
 set nocompatible
 
-" turn line numbers on
-set number relativenumber
-
 " turn syntax highlighting on
 syntax on
 
 " use indentation of previous line
 set autoindent
-" use intelligent indentation for C
-set smartindent
-
-" configure tabwidth and insert spaces instead of tabs
-set tabstop=4        " a tab is displayed as 4 spaces
-set shiftwidth=4     " indent also with 4 spaces
-set softtabstop=4    " how many columns are used when hitting the tab key
-set expandtab        " expand tabs to spaces
-" different tabwith for some filetypes
-autocmd Filetype yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd Filetype css setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
-
-" wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
-"set textwidth=120
-
-" colorsheme
-"if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
-"    let base16colorspace=256
-"    set background=dark
-"endif
-"colorscheme base16-tomorrow
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
-
-" highlight matching braces
-set showmatch
-
-" airline allways appear
-set laststatus=2
 
 " Comment this line to enable autocompletion preview window
 " (displays documentation related to the selected completion option)
 " Disabled by default because preview makes the window flicker
 set completeopt-=preview
 
+" ignoreing cases in search unless it's uppercase
+set ignorecase smartcase
+
+" expand tabs to spaces
+set expandtab
+
+" airline allways appear
+set laststatus=2
+
+" allow mouse everywhere
+set mouse=a
+
+" turn line numbers on
+set number relativenumber
+
+" enable omnicomplete
+set omnifunc=syntaxcomplete#Complete
+
 " when scrolling, keep cursor 3 lines away from screen border
 set scrolloff=3
+
+" indent also with 4 spaces
+set shiftwidth=4
+
+" wrap lines at 120 chars. 80 is somewhat antiquated with nowadays displays.
+"set textwidth=120
+
+" show commands while typing
+set showcmd
+
+" highlight matching braces
+set showmatch
+
+" use intelligent indentation for C
+set smartindent
 
 " more natural window splitting
 set splitright
 set splitbelow
+
+" configure tabwidth and insert spaces instead of tabs
+" a tab is displayed as 4 spaces
+set tabstop=4
+
+" different tabwith for some filetypes
+autocmd Filetype yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd Filetype css setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
+" colorsheme
+"if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
+"    let base16colorspace=256
+"    set background=dark
+"endif
+"
+"colorscheme base16-tomorrow
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+"set background=dark
+"colorscheme base16-tomorrow
+
 
 " change <leader> to ,
 let mapleader=","
@@ -116,8 +155,10 @@ let mapleader=","
 nnoremap ü <C-]>
 nnoremap Ü <C-O>
 
-" enable omnicomplete
-set omnifunc=syntaxcomplete#Complete
+set clipboard=unnamed
+if has('unnamedplus')
+    set clipboard=unnamedplus
+endif
 
 " ===============================================
 " Plugin settings
@@ -130,6 +171,7 @@ set statusline+=%*
 
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['pylint', 'flake8']
 
 " remap F5 for check
 noremap <silent><F5> :SyntasticCheck<CR>
@@ -163,7 +205,7 @@ let g:tagbar_autofocus = 1
 map <F3> :NERDTreeToggle<CR>
 " open nerdtree with the current file selected
 nmap ,t :NERDTreeFind<CR>
-" don;t show these file types
+" don't show these file types
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
 " open NERDTree if opening directory
 autocmd StdinReadPre * let s:std_in=1
@@ -230,6 +272,7 @@ let g:neocomplete#same_filetypes._ = '_'
 inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " transparent background
+"if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
 highlight Normal ctermbg=none
 highlight Statement ctermbg=none
 highlight Title ctermbg=none
@@ -238,3 +281,4 @@ highlight ErrorMsg ctermbg=none
 highlight LineNr ctermbg=none
 highlight Todo ctermbg=none
 highlight NonText ctermbg=none
+"endif
