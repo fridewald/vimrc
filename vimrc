@@ -36,8 +36,12 @@ Plugin 'fisadev/vim-ctrlp-cmdpalette'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
 Plugin 'klen/python-mode'
-"git integration
+" git integration
 Plugin 'tpope/vim-fugitive'
+" nice and easy surrounding manipulation
+Plugin 'tpope/vim-surround'
+" go support plugin
+Plugin 'fatih/vim-go'
 
 " alignment plugin
 "Plugin 'junegunn/vim-easy-align'
@@ -53,7 +57,7 @@ filetype plugin indent on   "required
 set nocompatible
 
 " turn line numbers on
-set number
+set number relativenumber
 
 " turn syntax highlighting on
 syntax on
@@ -64,18 +68,28 @@ set autoindent
 set smartindent
 
 " configure tabwidth and insert spaces instead of tabs
-set tabstop=4        " tab width is 4 spaces
+set tabstop=4        " a tab is displayed as 4 spaces
 set shiftwidth=4     " indent also with 4 spaces
+set softtabstop=4    " how many columns are used when hitting the tab key
 set expandtab        " expand tabs to spaces
+" different tabwith for some filetypes
+autocmd Filetype yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd Filetype css setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
 " wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
 "set textwidth=120
 
 " colorsheme
-if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
-    let base16colorspace=256
-    set background=dark
+"if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
+"    let base16colorspace=256
+"    set background=dark
+"endif
+"colorscheme base16-tomorrow
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
 endif
-colorscheme base16-tomorrow
 
 " highlight matching braces
 set showmatch
@@ -97,6 +111,13 @@ set splitbelow
 
 " change <leader> to ,
 let mapleader=","
+
+" change tag map to something more easy on German keyboard
+nnoremap ü <C-]>
+nnoremap Ü <C-O>
+
+" enable omnicomplete
+set omnifunc=syntaxcomplete#Complete
 
 " ===============================================
 " Plugin settings
@@ -131,6 +152,7 @@ nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
 nmap ,o :RopeFindOccurrences<CR>
 
 " Tagbar---------------------
+" YOU HAVE TO INSTALL ctags SEPARATELY
 " toggle tagbar display
 map <F4> :TagbarToggle<CR>
 " autofocus on tagbar open
@@ -143,6 +165,11 @@ map <F3> :NERDTreeToggle<CR>
 nmap ,t :NERDTreeFind<CR>
 " don;t show these file types
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
+" open NERDTree if opening directory
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+" close vim if NERDTree is the last left
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " CtrlP----------------------
 " file finder mapping
