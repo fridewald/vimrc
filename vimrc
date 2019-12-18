@@ -132,6 +132,7 @@ set tabstop=4
 autocmd Filetype yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd Filetype css setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd Filetype markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 " colorsheme
 "if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
@@ -155,6 +156,7 @@ let mapleader=","
 nnoremap ü <C-]>
 nnoremap Ü <C-O>
 
+" try to use system clipboard
 set clipboard=unnamed
 if has('unnamedplus')
     set clipboard=unnamedplus
