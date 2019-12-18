@@ -50,6 +50,8 @@ Plugin 'klen/python-mode'
 Plugin 'tpope/vim-fugitive'
 " nice and easy surrounding manipulation
 Plugin 'tpope/vim-surround'
+" comment out blocks of code more easily
+Plugin 'tpope/vim-commentary'
 " go support plugin
 Plugin 'fatih/vim-go'
 
@@ -117,6 +119,9 @@ set showcmd
 " highlight matching braces
 set showmatch
 
+" highlight search matches
+set hlsearch
+
 " use intelligent indentation for C
 set smartindent
 
@@ -143,9 +148,10 @@ autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
+else
+  set background=dark
+  colorscheme base16-tomorrow-night
 endif
-"set background=dark
-"colorscheme base16-tomorrow
 
 
 " change <leader> to ,
@@ -160,23 +166,41 @@ if has('unnamedplus')
     set clipboard=unnamedplus
 endif
 
+" simple ctags bind
+nmap <leader>ct :!ctags -R -f ./.git/tags . <enter>
+
+" set tags file to .git/tags
+set tags^=./.git/tags;
+
 " ===============================================
 " Plugin settings
-
 
 " syntastic------------------
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+"let g:syntastic_python_checkers = ['pylint', 'flake9']
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['pylint', 'flake8']
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '!'
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args='--builtins=FileNotFoundError --ignore=E501,E226'
+let g:syntastic_yaml_checkers = ['yamllint']
+let g:syntastic_tex_checkers = ['chktex']
+let g:syntastic_tex_chktex_args = '-n'
+
+let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
 
 " remap F5 for check
 noremap <silent><F5> :SyntasticCheck<CR>
 " show list of erors and warnings on the current file
-nmap <leader>e :Errors<CR>
+nmap <leader>E :Errors<CR>
+nnoremap <leader>ln :lnext<CR>
+nnoremap <leader>lp :lprevious<CR>
 
 " Python-mode----------------
 " don't use linter, we use syntastic for that
@@ -204,7 +228,7 @@ let g:tagbar_autofocus = 1
 " toggle nerdtree display
 map <F3> :NERDTreeToggle<CR>
 " open nerdtree with the current file selected
-nmap ,t :NERDTreeFind<CR>
+nmap <leader>t :NERDTreeFind<CR>
 " don't show these file types
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
 " open NERDTree if opening directory
@@ -217,15 +241,15 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " file finder mapping
 let g:ctrlp_map = ',e'
 " tags (symbols) in current file finder mapping
-nmap ,g :CtrlPBufTag<CR>
+nmap <leader>g :CtrlPBufTag<CR>
 " tags (symbols) in all files finder mapping
-nmap ,G :CtrlPBufTagAll<CR>
+nmap <leader>G :CtrlPBufTagAll<CR>
 " general code finder in all files mapping
-nmap ,f :CtrlPLine<CR>
+nmap <leader>f :CtrlPLine<CR>
 " recent files finder mapping
-nmap ,m :CtrlPMRUFiles<CR>
+nmap <leader>m :CtrlPMRUFiles<CR>
 " commands finder mapping
-nmap ,c :CtrlPCmdPalette<CR>
+nmap <leader>c :CtrlPCmdPalette<CR>
 " to be able to call CtrlP with default search text
 function! CtrlPWithSearchText(search_text, ctrlp_command_end)
     execute ':CtrlP' . a:ctrlp_command_end
@@ -265,7 +289,7 @@ let g:neocomplete#auto_completion_start_length = 1
 let g:neocomplete#manual_completion_start_length = 1
 let g:neocomplete#min_keyword_length = 1
 let g:neocomplete#sources#syntax#min_syntax_length = 1
-" complete with workds from any opened file
+" complete with words from any opened file
 let g:neocomplete#same_filetypes = {}
 let g:neocomplete#same_filetypes._ = '_'
 " <TAB>: completion
