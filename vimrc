@@ -26,11 +26,11 @@ Plugin 'chriskempson/base16-vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 " Better autocompletion
-Plugin 'Shougo/neocomplete.vim'
+" Plugin 'Shougo/neocomplete.vim'
 " delete white space
 Plugin 'bronson/vim-trailing-whitespace'
 " Treebrowsering
-Plugin 'scrooloose/nerdtree'
+" Plugin 'scrooloose/nerdtree'
 " Some improvements to nerdtree
 "Plugin 'jistr/vim-nerdtree-tabs'
 " Code commenter
@@ -53,7 +53,7 @@ Plugin 'tpope/vim-surround'
 " comment out blocks of code more easily
 Plugin 'tpope/vim-commentary'
 " go support plugin
-Plugin 'fatih/vim-go'
+" Plugin 'fatih/vim-go'
 " latex plugin
 Plugin 'lervag/vimtex'
 
@@ -74,14 +74,25 @@ filetype plugin indent on   "required
 " ================================================
 " ---General settings-----------------------------
 
+" minimal vim IDE
+" https://www.youtube.com/watch?v=Gs1VDYnS-Ac
 " no vi-compatible
 set nocompatible
 
 " turn syntax highlighting on
 syntax on
 
+" allow to switch buffer, even so it is not saved
+set hidden
+
+" disable swap file
+set noswapfile
+
+let $RTC=split(&runtimepath, ',')[0]
+let $RC="$HOME/.vim/vimrc"
+
 " use indentation of previous line
-set autoindent
+" set autoindent
 
 " Comment this line to enable autocompletion preview window
 " (displays documentation related to the selected completion option)
@@ -92,7 +103,7 @@ set completeopt-=preview
 set ignorecase smartcase
 
 " expand tabs to spaces
-set expandtab
+" set expandtab
 
 " enable local .nvimrc files
 set exrc
@@ -117,7 +128,7 @@ set omnifunc=syntaxcomplete#Complete
 set scrolloff=3
 
 " indent also with 4 spaces
-set shiftwidth=4
+" set shiftwidth=4
 
 " wrap lines at 120 chars. 80 is somewhat antiquated with nowadays displays.
 "set textwidth=120
@@ -132,7 +143,7 @@ set showmatch
 set hlsearch
 
 " use intelligent indentation for C
-set smartindent
+" set smartindent
 
 " more natural window splitting
 set splitright
@@ -140,14 +151,14 @@ set splitbelow
 
 " configure tabwidth and insert spaces instead of tabs
 " a tab is displayed as 4 spaces
-set tabstop=4
+" set tabstop=4
 
 " different tabwith for some filetypes
-autocmd Filetype yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd Filetype css setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd Filetype markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
-autocmd Filetype cpp setlocal shiftwidth=2 tabstop=2 softtabstop=2
+" autocmd Filetype yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+" autocmd Filetype css setlocal shiftwidth=2 tabstop=2 softtabstop=2
+" autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
+" autocmd Filetype markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
+" autocmd Filetype cpp setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 " colorscheme base16-tomorrow
 if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256\|konsole-256')
@@ -227,11 +238,6 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 1
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '!'
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args='--builtins=FileNotFoundError --ignore=E501,E226,E401'
-let g:syntastic_yaml_checkers = ['yamllint']
-let g:syntastic_tex_checkers = ['chktex']
-let g:syntastic_tex_chktex_args = '-n'
 
 
 " remap F5 for check
@@ -265,18 +271,18 @@ map <F4> :TagbarToggle<CR>
 " autofocus on tagbar open
 let g:tagbar_autofocus = 1
 
-" NERDTree-------------------
-" toggle nerdtree display
-map <F3> :NERDTreeToggle<CR>
-" open nerdtree with the current file selected
-nmap <leader>t :NERDTreeFind<CR>
-" don't show these file types
+" " NERDTree-------------------
+" " toggle nerdtree display
+" map <F3> :NERDTreeToggle<CR>
+" " open nerdtree with the current file selected
+" nmap <leader>t :NERDTreeFind<CR>
+" " don't show these file types
 " let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
-" open NERDTree if opening directory
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-" close vim if NERDTree is the last left
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" " open NERDTree if opening directory
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+" " close vim if NERDTree is the last left
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " CtrlP----------------------
 " file finder mapping
@@ -296,14 +302,6 @@ nmap <leader>c :CtrlPCmdPalette<CR>
 "     execute ':CtrlP' . a:ctrlp_command_end
 "     call feedkeys(a:search_text)
 " endfunction
-" same as previous mappings, but calling with current word as default text
-" nmap ,wg :call CtrlPWithSearchText(expand('<cword>'), 'BufTag')<CR>
-" nmap ,wG :call CtrlPWithSearchText(expand('<cword>'), 'BufTagAll')<CR>
-" nmap ,wf :call CtrlPWithSearchText(expand('<cword>'), 'Line')<CR>
-" nmap ,we :call CtrlPWithSearchText(expand('<cword>'), '')<CR>
-" nmap ,pe :call CtrlPWithSearchText(expand('<cfile>'), '')<CR>
-" nmap ,wm :call CtrlPWithSearchText(expand('<cword>'), 'MRUFiles')<CR>
-" nmap ,wc :call CtrlPWithSearchText(expand('<cword>'), 'CmdPalette')<CR>
 " don't change working directory
 let g:ctrlp_working_path_mode = 0
 " ignore these files and folders on file finder
@@ -316,25 +314,6 @@ let g:ctrlp_custom_ignore = {
 let g:airline_powerline_font = 1
 " let g:airline_theme = 'base16-tomorrow'
 let g:airline#extensions#whitespace#enabled = 0
-
-" NeoComplete.vim------------
-" most of them not documented because I'm not sure how they work
-" (docs aren't good, had to do a lot of trial and error to make
-" it play nice)
-" let g:neocomplete#enable_at_startup = 1
-" let g:neocomplete#enable_ignore_case = 1
-" let g:neocomplete#enable_smart_case = 1
-" let g:neocomplete#enable_auto_select = 1
-" let g:neocomplete#enable_fuzzy_completion = 1
-" let g:neocomplete#auto_completion_start_length = 1
-" let g:neocomplete#manual_completion_start_length = 1
-" let g:neocomplete#min_keyword_length = 1
-" let g:neocomplete#sources#syntax#min_syntax_length = 1
-" " complete with words from any opened file
-" let g:neocomplete#same_filetypes = {}
-" let g:neocomplete#same_filetypes._ = '_'
-" <TAB>: completion
-" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " transparent background
 "if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
