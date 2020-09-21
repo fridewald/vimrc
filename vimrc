@@ -54,6 +54,8 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 " go support plugin
 Plugin 'fatih/vim-go'
+" latex plugin
+Plugin 'lervag/vimtex'
 
 " alignment plugin
 "Plugin 'junegunn/vim-easy-align'
@@ -91,6 +93,13 @@ set ignorecase smartcase
 
 " expand tabs to spaces
 set expandtab
+
+" enable local .nvimrc files
+set exrc
+
+" enable folding
+set foldmethod=indent
+set foldlevel=99
 
 " airline allways appear
 set laststatus=2
@@ -138,25 +147,27 @@ autocmd Filetype yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd Filetype css setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd Filetype markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd Filetype cpp setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
-" colorsheme
-"if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
-"    let base16colorspace=256
-"    set background=dark
-"endif
-"
-"colorscheme base16-tomorrow
+" colorscheme base16-tomorrow
+if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256\|konsole-256')
+    let base16colorspace=256
+    " || has('nvim')
+" if $TERM !~# "konsole.*"
+endif
+
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
 else
-  set background=dark
-  colorscheme base16-tomorrow-night
+  colorscheme base16-tomorrow
 endif
 
 
 " change <leader> to ,
 let mapleader=","
+" change <localleader> to
+let maplocalleader="-"
 
 " change tag map to something more easy on German keyboard
 nnoremap ü <C-]>
@@ -181,6 +192,9 @@ if (filereadable(b:vim))
     execute "source ".b:vim
 endif
 
+" map to make command
+nnoremap <F6> :make<cr>
+
 " ===============================================
 " Plugin settings
 
@@ -189,11 +203,28 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+" let g:syntastic_debug = 1
+let g:syntastic_ignore_files = ['\m\c\<config\.h$']
+
+let g:syntastic_python_checkers = ['flake8']
 "let g:syntastic_python_checkers = ['pylint', 'flake9']
+let g:syntastic_python_flake8_args='--builtins=FileNotFoundError --ignore=E226,E402,E501,E722,W503,W605'
+
+let g:syntastic_yaml_checkers = ['yamllint']
+
+let g:syntastic_tex_checkers = ['chktex']
+let g:syntastic_tex_chktex_args = '-n'
+
+let g:syntastic_cpp_compiler_options = '-std=c++11 -fPIC'
+let g:syntastic_cpp_check_header = 0
+" let g:syntastic_cpp_auto_refresh_includes = 0
+
+" let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
+
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 1
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '!'
 let g:syntastic_python_checkers = ['flake8']
@@ -202,7 +233,6 @@ let g:syntastic_yaml_checkers = ['yamllint']
 let g:syntastic_tex_checkers = ['chktex']
 let g:syntastic_tex_chktex_args = '-n'
 
-let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
 
 " remap F5 for check
 noremap <silent><F5> :SyntasticCheck<CR>
@@ -215,6 +245,8 @@ nnoremap <leader>lp :lprevious<CR>
 " don't use linter, we use syntastic for that
 let g:pymode_lint_on_write = 0
 let g:pymode_lint_signs = 0
+" no autocomplition on dot
+let g:pymode_rope_complete_on_dot = 0
 " don't fold python code on open
 let g:pymode_folding = 0
 " don't load rope by default. Change to 1 to use rope
@@ -239,7 +271,7 @@ map <F3> :NERDTreeToggle<CR>
 " open nerdtree with the current file selected
 nmap <leader>t :NERDTreeFind<CR>
 " don't show these file types
-let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
+" let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
 " open NERDTree if opening directory
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
@@ -260,18 +292,18 @@ nmap <leader>m :CtrlPMRUFiles<CR>
 " commands finder mapping
 nmap <leader>c :CtrlPCmdPalette<CR>
 " to be able to call CtrlP with default search text
-function! CtrlPWithSearchText(search_text, ctrlp_command_end)
-    execute ':CtrlP' . a:ctrlp_command_end
-    call feedkeys(a:search_text)
-endfunction
+" function! CtrlPWithSearchText(search_text, ctrlp_command_end)
+"     execute ':CtrlP' . a:ctrlp_command_end
+"     call feedkeys(a:search_text)
+" endfunction
 " same as previous mappings, but calling with current word as default text
-nmap ,wg :call CtrlPWithSearchText(expand('<cword>'), 'BufTag')<CR>
-nmap ,wG :call CtrlPWithSearchText(expand('<cword>'), 'BufTagAll')<CR>
-nmap ,wf :call CtrlPWithSearchText(expand('<cword>'), 'Line')<CR>
-nmap ,we :call CtrlPWithSearchText(expand('<cword>'), '')<CR>
-nmap ,pe :call CtrlPWithSearchText(expand('<cfile>'), '')<CR>
-nmap ,wm :call CtrlPWithSearchText(expand('<cword>'), 'MRUFiles')<CR>
-nmap ,wc :call CtrlPWithSearchText(expand('<cword>'), 'CmdPalette')<CR>
+" nmap ,wg :call CtrlPWithSearchText(expand('<cword>'), 'BufTag')<CR>
+" nmap ,wG :call CtrlPWithSearchText(expand('<cword>'), 'BufTagAll')<CR>
+" nmap ,wf :call CtrlPWithSearchText(expand('<cword>'), 'Line')<CR>
+" nmap ,we :call CtrlPWithSearchText(expand('<cword>'), '')<CR>
+" nmap ,pe :call CtrlPWithSearchText(expand('<cfile>'), '')<CR>
+" nmap ,wm :call CtrlPWithSearchText(expand('<cword>'), 'MRUFiles')<CR>
+" nmap ,wc :call CtrlPWithSearchText(expand('<cword>'), 'CmdPalette')<CR>
 " don't change working directory
 let g:ctrlp_working_path_mode = 0
 " ignore these files and folders on file finder
@@ -282,27 +314,27 @@ let g:ctrlp_custom_ignore = {
 
 " Airline--------------------
 let g:airline_powerline_font = 1
-"let g:airline_theme = 'base16'
+" let g:airline_theme = 'base16-tomorrow'
 let g:airline#extensions#whitespace#enabled = 0
 
 " NeoComplete.vim------------
 " most of them not documented because I'm not sure how they work
 " (docs aren't good, had to do a lot of trial and error to make
 " it play nice)
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_ignore_case = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_auto_select = 1
-let g:neocomplete#enable_fuzzy_completion = 1
-let g:neocomplete#auto_completion_start_length = 1
-let g:neocomplete#manual_completion_start_length = 1
-let g:neocomplete#min_keyword_length = 1
-let g:neocomplete#sources#syntax#min_syntax_length = 1
-" complete with words from any opened file
-let g:neocomplete#same_filetypes = {}
-let g:neocomplete#same_filetypes._ = '_'
+" let g:neocomplete#enable_at_startup = 1
+" let g:neocomplete#enable_ignore_case = 1
+" let g:neocomplete#enable_smart_case = 1
+" let g:neocomplete#enable_auto_select = 1
+" let g:neocomplete#enable_fuzzy_completion = 1
+" let g:neocomplete#auto_completion_start_length = 1
+" let g:neocomplete#manual_completion_start_length = 1
+" let g:neocomplete#min_keyword_length = 1
+" let g:neocomplete#sources#syntax#min_syntax_length = 1
+" " complete with words from any opened file
+" let g:neocomplete#same_filetypes = {}
+" let g:neocomplete#same_filetypes._ = '_'
 " <TAB>: completion
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " transparent background
 "if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256') || has('nvim')
@@ -315,3 +347,11 @@ highlight LineNr ctermbg=none
 highlight Todo ctermbg=none
 highlight NonText ctermbg=none
 "endif
+
+" vimtex settings
+" set okular
+
+let g:tex_flavor = 'latex'
+let g:vimtex_view_general_viewer = 'okular'
+let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+let g:vimtex_view_general_options_latexmk = '--unique'
