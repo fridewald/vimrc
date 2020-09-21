@@ -45,7 +45,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'fisadev/vim-ctrlp-cmdpalette'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
-Plugin 'python-mode/python-mode'
+" Plugin 'python-mode/python-mode'
 " git integration
 Plugin 'tpope/vim-fugitive'
 " nice and easy surrounding manipulation
@@ -76,6 +76,10 @@ filetype plugin indent on   "required
 
 " minimal vim IDE
 " https://www.youtube.com/watch?v=Gs1VDYnS-Ac
+" define varibales for the youtube stuff
+let $RTC=split(&runtimepath, ',')[0]
+let $RC="$HOME/.vim/vimrc"
+
 " no vi-compatible
 set nocompatible
 
@@ -88,11 +92,9 @@ set hidden
 " disable swap file
 set noswapfile
 
-let $RTC=split(&runtimepath, ',')[0]
-let $RC="$HOME/.vim/vimrc"
 
-" use indentation of previous line
-" set autoindent
+" usefull path
+set path=.,**
 
 " Comment this line to enable autocompletion preview window
 " (displays documentation related to the selected completion option)
@@ -102,9 +104,6 @@ set completeopt-=preview
 " ignoreing cases in search unless it's uppercase
 set ignorecase smartcase
 
-" expand tabs to spaces
-" set expandtab
-
 " enable local .nvimrc files
 set exrc
 
@@ -112,7 +111,7 @@ set exrc
 set foldmethod=indent
 set foldlevel=99
 
-" airline allways appear
+" airline always appear
 set laststatus=2
 
 " allow mouse everywhere
@@ -127,9 +126,6 @@ set omnifunc=syntaxcomplete#Complete
 " when scrolling, keep cursor 3 lines away from screen border
 set scrolloff=3
 
-" indent also with 4 spaces
-" set shiftwidth=4
-
 " wrap lines at 120 chars. 80 is somewhat antiquated with nowadays displays.
 "set textwidth=120
 
@@ -139,11 +135,8 @@ set showcmd
 " highlight matching braces
 set showmatch
 
-" highlight search matches
-set hlsearch
-
-" use intelligent indentation for C
-" set smartindent
+" not highlight search matches
+set nohlsearch
 
 " more natural window splitting
 set splitright
@@ -152,13 +145,14 @@ set splitbelow
 " configure tabwidth and insert spaces instead of tabs
 " a tab is displayed as 4 spaces
 " set tabstop=4
-
-" different tabwith for some filetypes
-" autocmd Filetype yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
-" autocmd Filetype css setlocal shiftwidth=2 tabstop=2 softtabstop=2
-" autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2
-" autocmd Filetype markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
-" autocmd Filetype cpp setlocal shiftwidth=2 tabstop=2 softtabstop=2
+" indent also with 4 spaces
+" set shiftwidth=4
+" expand tabs to spaces
+" set expandtab
+" use indentation of previous line
+" set autoindent
+" use intelligent indentation for C
+" set smartindent
 
 " colorscheme base16-tomorrow
 if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256\|konsole-256')
@@ -191,17 +185,10 @@ if has('unnamedplus')
 endif
 
 " simple ctags bind
-nmap <leader>ct :!ctags -R -f ./.git/tags . <enter>
+nmap <leader>ct :!ctags -R -f ./tags . <enter>
 
 " set tags file to .git/tags
-set tags^=./.git/tags;
-
-" read .vim file from local directory
-let b:thisdir=expand("%:p:h")
-let b:vim=b:thisdir."/.vim"
-if (filereadable(b:vim))
-    execute "source ".b:vim
-endif
+" set tags^=./.git/tags;
 
 " map to make command
 nnoremap <F6> :make<cr>
@@ -214,17 +201,14 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-" let g:syntastic_debug = 1
-let g:syntastic_ignore_files = ['\m\c\<config\.h$']
-
 let g:syntastic_python_checkers = ['flake8']
 "let g:syntastic_python_checkers = ['pylint', 'flake9']
 let g:syntastic_python_flake8_args='--builtins=FileNotFoundError --ignore=E226,E402,E501,E722,W503,W605'
 
 let g:syntastic_yaml_checkers = ['yamllint']
 
-let g:syntastic_tex_checkers = ['chktex']
-let g:syntastic_tex_chktex_args = '-n'
+" let g:syntastic_tex_checkers = ['chktex']
+" let g:syntastic_tex_chktex_args = '-n'
 
 let g:syntastic_cpp_compiler_options = '-std=c++11 -fPIC'
 let g:syntastic_cpp_check_header = 0
@@ -249,20 +233,20 @@ nnoremap <leader>lp :lprevious<CR>
 
 " Python-mode----------------
 " don't use linter, we use syntastic for that
-let g:pymode_lint_on_write = 0
-let g:pymode_lint_signs = 0
-" no autocomplition on dot
-let g:pymode_rope_complete_on_dot = 0
-" don't fold python code on open
-let g:pymode_folding = 0
-" don't load rope by default. Change to 1 to use rope
-let g:pymode_rope = 1
-" open definitions on same window, and custom mappings for definitions and
-" occurrences
-let g:pymode_rope_goto_definition_bind = ',d'
-let g:pymode_rope_goto_definition_cmd = 'e'
-nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
-nmap ,o :RopeFindOccurrences<CR>
+" let g:pymode_lint_on_write = 0
+" let g:pymode_lint_signs = 0
+" " no autocomplition on dot
+" let g:pymode_rope_complete_on_dot = 0
+" " don't fold python code on open
+" let g:pymode_folding = 0
+" " don't load rope by default. Change to 1 to use rope
+" let g:pymode_rope = 1
+" " open definitions on same window, and custom mappings for definitions and
+" " occurrences
+" let g:pymode_rope_goto_definition_bind = ',d'
+" let g:pymode_rope_goto_definition_cmd = 'e'
+" nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
+" nmap ,o :RopeFindOccurrences<CR>
 
 " Tagbar---------------------
 " YOU HAVE TO INSTALL ctags SEPARATELY
@@ -270,19 +254,6 @@ nmap ,o :RopeFindOccurrences<CR>
 map <F4> :TagbarToggle<CR>
 " autofocus on tagbar open
 let g:tagbar_autofocus = 1
-
-" " NERDTree-------------------
-" " toggle nerdtree display
-" map <F3> :NERDTreeToggle<CR>
-" " open nerdtree with the current file selected
-" nmap <leader>t :NERDTreeFind<CR>
-" " don't show these file types
-" let NERDTreeIgnore = ['\.pyc$', '\.pyo$']
-" " open NERDTree if opening directory
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-" " close vim if NERDTree is the last left
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " CtrlP----------------------
 " file finder mapping
@@ -298,6 +269,7 @@ nmap <leader>m :CtrlPMRUFiles<CR>
 " commands finder mapping
 nmap <leader>c :CtrlPCmdPalette<CR>
 " to be able to call CtrlP with default search text
+nmap <leader>b :CtrlPBuffer<CR>
 " function! CtrlPWithSearchText(search_text, ctrlp_command_end)
 "     execute ':CtrlP' . a:ctrlp_command_end
 "     call feedkeys(a:search_text)
