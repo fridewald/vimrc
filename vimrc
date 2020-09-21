@@ -34,7 +34,7 @@ Plugin 'scrooloose/nerdtree'
 " Some improvements to nerdtree
 "Plugin 'jistr/vim-nerdtree-tabs'
 " Code commenter
-Plugin 'scrooloose/nerdcommenter'
+" Plugin 'scrooloose/nerdcommenter'
 " Class/module browser
 Plugin 'majutsushi/tagbar'
 " Syntax checker
@@ -45,7 +45,7 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'fisadev/vim-ctrlp-cmdpalette'
 " Python mode (indentation, doc, refactor, lints, code checking, motion and
 " operators, highlighting, run and ipdb breakpoints)
-Plugin 'klen/python-mode'
+Plugin 'python-mode/python-mode'
 " git integration
 Plugin 'tpope/vim-fugitive'
 " nice and easy surrounding manipulation
@@ -174,6 +174,13 @@ nmap <leader>ct :!ctags -R -f ./.git/tags . <enter>
 " set tags file to .git/tags
 set tags^=./.git/tags;
 
+" read .vim file from local directory
+let b:thisdir=expand("%:p:h")
+let b:vim=b:thisdir."/.vim"
+if (filereadable(b:vim))
+    execute "source ".b:vim
+endif
+
 " ===============================================
 " Plugin settings
 
@@ -190,7 +197,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '!'
 let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args='--builtins=FileNotFoundError --ignore=E501,E226'
+let g:syntastic_python_flake8_args='--builtins=FileNotFoundError --ignore=E501,E226,E401'
 let g:syntastic_yaml_checkers = ['yamllint']
 let g:syntastic_tex_checkers = ['chktex']
 let g:syntastic_tex_chktex_args = '-n'
@@ -211,7 +218,7 @@ let g:pymode_lint_signs = 0
 " don't fold python code on open
 let g:pymode_folding = 0
 " don't load rope by default. Change to 1 to use rope
-let g:pymode_rope = 0
+let g:pymode_rope = 1
 " open definitions on same window, and custom mappings for definitions and
 " occurrences
 let g:pymode_rope_goto_definition_bind = ',d'
