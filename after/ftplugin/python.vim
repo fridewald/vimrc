@@ -16,15 +16,13 @@ function! PyInclude(fname)
     if len(parts) > 1
         let r = parts[1]
         let joined = join([l, r], '.')
-        let fp = substitute(joined, '\.', '/', 'g'). '.py'
+        let fp = substitute(joined, '\.', '/', 'g').'.py'
         let found = glob(fp, 1)
-        echom found
         if len(found)
             return found
         endif
     endif
-    echo substitute(l, '\.', '/', 'g'). '.py'
-    return substitute(l, '\.', '/', 'g'). '.py'
+    return substitute(l, '\.', '/', 'g').'.py'
 endfunction
 
 setlocal includeexpr=PyInclude(v:fname)
