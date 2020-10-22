@@ -25,16 +25,8 @@ Plugin 'chriskempson/base16-vim'
 " Airline
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-" Better autocompletion
-" Plugin 'Shougo/neocomplete.vim'
 " delete white space
 Plugin 'bronson/vim-trailing-whitespace'
-" Treebrowsering
-" Plugin 'scrooloose/nerdtree'
-" Some improvements to nerdtree
-"Plugin 'jistr/vim-nerdtree-tabs'
-" Code commenter
-" Plugin 'scrooloose/nerdcommenter'
 " Class/module browser
 Plugin 'majutsushi/tagbar'
 " Syntax checker
@@ -52,8 +44,6 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 " comment out blocks of code more easily
 Plugin 'tpope/vim-commentary'
-" go support plugin
-" Plugin 'fatih/vim-go'
 " latex plugin
 Plugin 'lervag/vimtex'
 
@@ -236,22 +226,6 @@ nmap <leader>E :Errors<CR>
 nnoremap <leader>ln :lnext<CR>
 nnoremap <leader>lp :lprevious<CR>
 
-" Python-mode----------------
-" don't use linter, we use syntastic for that
-" let g:pymode_lint_on_write = 0
-" let g:pymode_lint_signs = 0
-" " no autocomplition on dot
-" let g:pymode_rope_complete_on_dot = 0
-" " don't fold python code on open
-" let g:pymode_folding = 0
-" " don't load rope by default. Change to 1 to use rope
-" let g:pymode_rope = 1
-" " open definitions on same window, and custom mappings for definitions and
-" " occurrences
-" let g:pymode_rope_goto_definition_bind = ',d'
-" let g:pymode_rope_goto_definition_cmd = 'e'
-" nmap ,D :tab split<CR>:PymodePython rope.goto()<CR>
-" nmap ,o :RopeFindOccurrences<CR>
 
 " Tagbar---------------------
 " YOU HAVE TO INSTALL ctags SEPARATELY
