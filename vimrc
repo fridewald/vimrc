@@ -183,10 +183,10 @@ nmap <leader>ct :!ctags -R -f ./tags . <enter>
 " map to make command
 nnoremap <F6> :make<cr>
 
-" ===============================================
+" ================================================
 " Plugin settings
 
-" syntastic------------------
+" syntastic---------------------------------------
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -227,14 +227,14 @@ nnoremap <leader>ln :lnext<CR>
 nnoremap <leader>lp :lprevious<CR>
 
 
-" Tagbar---------------------
+" Tagbar------------------------------------------
 " YOU HAVE TO INSTALL ctags SEPARATELY
 " toggle tagbar display
 map <F4> :TagbarToggle<CR>
 " autofocus on tagbar open
 let g:tagbar_autofocus = 1
 
-" CtrlP----------------------
+" CtrlP-------------------------------------------
 " file finder mapping
 let g:ctrlp_map = ',e'
 " tags (symbols) in current file finder mapping
@@ -261,7 +261,7 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\.pyc$\|\.pyo$',
   \ }
 
-" Airline--------------------
+" Airline-----------------------------------------
 let g:airline_powerline_font = 1
 " let g:airline_theme = 'base16-tomorrow'
 let g:airline#extensions#whitespace#enabled = 0
@@ -278,10 +278,18 @@ highlight Todo ctermbg=none
 highlight NonText ctermbg=none
 "endif
 
-" vimtex settings
+" vimtex------------------------------------------
 " set okular
 
 let g:tex_flavor = 'latex'
 let g:vimtex_view_general_viewer = 'okular'
 let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
+set diffopt+=vertical
+
+" let g:vimtex_grammar_vlty = {'lt_directory': '/home/julian/bin/LanguageTool-5.1'}
+let g:vimtex_grammar_textidote = {
+      \ 'jar': $HOME . '/bin/textidote.jar',
+      \ 'args': '--dict ' . $HOME . '/.textidote.dict',
+      \}
+set spelllang=en
