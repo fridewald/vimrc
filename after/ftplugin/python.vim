@@ -1,5 +1,6 @@
 " PEP 8 recommendation
-set shiftwidth=4 tabstop=4 softtabstop=4 expandtab autoindent smartindent
+set shiftwidth=4 tabstop=4 softtabstop=4 autoindent smartindent
+"expandtab
 
 " set path to python
 " setlocal path=src/**,tests/bin/**
