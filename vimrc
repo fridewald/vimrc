@@ -1,5 +1,6 @@
 " ---Plugin installation--------------------------
 " copied a lot from "fisadev/fisa-vim-config"
+" to fill lines till column 50 use 50A-<ESC>d50|
 "Vundle configuration set nocompatible        "be improved, required
 filetype off            "required
 
@@ -46,6 +47,8 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 " latex plugin
 Plugin 'lervag/vimtex'
+" todo.txt
+Plugin 'dbeniamine/todo.txt-vim'
 
 " alignment plugin
 "Plugin 'junegunn/vim-easy-align'
@@ -293,3 +296,17 @@ let g:vimtex_grammar_textidote = {
       \ 'args': '--dict ' . $HOME . '/.textidote.dict',
       \}
 set spelllang=en
+
+" todo.txt----------------------------------------
+
+" Use todo#Complete as the omni complete function for todo files
+au filetype todo setlocal omnifunc=todo#Complete
+
+" Auto complete projects
+au filetype todo imap <buffer> + +<C-X><C-O>
+
+" Auto complete contexts
+au filetype todo imap <buffer> @ @<C-X><C-O>
+
+" perfix new line with date
+let g:Todo_txt_prefix_creation_date=1
