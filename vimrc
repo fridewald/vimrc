@@ -45,6 +45,8 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 " comment out blocks of code more easily
 Plugin 'tpope/vim-commentary'
+" repeat plugin commands
+Plugin 'tpope/vim-repeat'
 " latex plugin
 Plugin 'lervag/vimtex'
 " todo.txt
@@ -85,9 +87,8 @@ set hidden
 " disable swap file
 set noswapfile
 
-
 " usefull path
-set path=.,**
+set path+=.,**
 
 " Comment this line to enable autocompletion preview window
 " (displays documentation related to the selected completion option)
@@ -147,18 +148,9 @@ set splitbelow
 " use intelligent indentation for C
 " set smartindent
 
-" colorscheme base16-tomorrow
-if (&term =~? 'mlterm\|xterm\|xterm-256\|screen-256\|konsole-256')
-    let base16colorspace=256
-    " || has('nvim')
-" if $TERM !~# "konsole.*"
-endif
-
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
   source ~/.vimrc_background
-else
-  colorscheme base16-tomorrow
 endif
 
 
@@ -223,6 +215,7 @@ let g:syntastic_warning_symbol = '!'
 
 
 " remap F5 for check
+
 noremap <silent><F5> :SyntasticCheck<CR>
 " show list of erors and warnings on the current file
 nmap <leader>E :Errors<CR>
