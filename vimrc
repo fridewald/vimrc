@@ -138,15 +138,12 @@ set splitbelow
 
 " configure tabwidth and insert spaces instead of tabs
 " a tab is displayed as 4 spaces
-" set tabstop=4
 " indent also with 4 spaces
-" set shiftwidth=4
+set tabstop=4 softtabstop=4 shiftwidth=4
 " expand tabs to spaces
-" set expandtab
+set expandtab
 " use indentation of previous line
 " set autoindent
-" use intelligent indentation for C
-" set smartindent
 
 if filereadable(expand("~/.vimrc_background"))
   let base16colorspace=256
